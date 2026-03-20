@@ -63,8 +63,12 @@
     </div>
   </aside>
 
+  <!-- mobile sidebar overlay -->
+  <div class="sidebar-overlay hidden" id="sidebar-overlay"></div>
+
   <main class="main">
     <header class="main-header">
+      <button class="hamburger" id="hamburger-btn" aria-label="Меню">☰</button>
       <h2 id="current-folder-name">Все файлы</h2>
       <div class="header-actions">
         <input type="text" id="search-input" placeholder="Поиск..." class="search-input" />
@@ -88,6 +92,26 @@
     </div>
   </div>
 </div>
+
+<!-- BOTTOM NAV (mobile) -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="bottom-nav-item active" id="bn-files">
+    <span class="bn-icon">🗂</span>
+    <span class="bn-label">Файлы</span>
+  </button>
+  <button class="bottom-nav-item" id="bn-upload">
+    <span class="bn-icon bn-upload-icon">＋</span>
+    <span class="bn-label">Загрузить</span>
+  </button>
+  <button class="bottom-nav-item" id="bn-folders">
+    <span class="bn-icon">📁</span>
+    <span class="bn-label">Папки</span>
+  </button>
+  <button class="bottom-nav-item" id="bn-logout">
+    <span class="bn-icon">⏏</span>
+    <span class="bn-label">Выйти</span>
+  </button>
+</nav>
 
 <!-- TOAST -->
 <div id="toast" class="toast hidden"></div>

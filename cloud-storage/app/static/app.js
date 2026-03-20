@@ -140,6 +140,35 @@ function setupApp() {
   // logout
   document.getElementById('logout-btn').addEventListener('click', logout);
 
+  // hamburger + sidebar drawer
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  const openSidebar = () => { sidebar.classList.add('open'); overlay.classList.remove('hidden'); };
+  const closeSidebar = () => { sidebar.classList.remove('open'); overlay.classList.add('hidden'); };
+  document.getElementById('hamburger-btn').addEventListener('click', openSidebar);
+  overlay.addEventListener('click', closeSidebar);
+
+  // bottom nav
+  document.getElementById('bn-files').addEventListener('click', () => {
+    currentFolderId = null;
+    document.getElementById('current-folder-name').textContent = 'Все файлы';
+    document.querySelectorAll('.nav-item, .folder-item').forEach(el => el.classList.remove('active'));
+    document.querySelector('.nav-item').classList.add('active');
+    document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active'));
+    document.getElementById('bn-files').classList.add('active');
+    renderFiles();
+    closeSidebar();
+  });
+  document.getElementById('bn-upload').addEventListener('click', () => {
+    document.getElementById('file-input').click();
+  });
+  document.getElementById('bn-folders').addEventListener('click', () => {
+    document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active'));
+    document.getElementById('bn-folders').classList.add('active');
+    openSidebar();
+  });
+  document.getElementById('bn-logout').addEventListener('click', logout);
+
   // new folder
   document.getElementById('new-folder-btn').addEventListener('click', () => {
     openModal('Новая папка', '<input id="folder-name-input" placeholder="Название папки" />', async () => {
@@ -227,6 +256,9 @@ function renderFolders() {
       document.querySelectorAll('.nav-item, .folder-item').forEach(el => el.classList.remove('active'));
       el.classList.add('active');
       renderFiles();
+      // close drawer on mobile
+      document.querySelector('.sidebar').classList.remove('open');
+      document.getElementById('sidebar-overlay').classList.add('hidden');
     });
     list.appendChild(el);
   });
