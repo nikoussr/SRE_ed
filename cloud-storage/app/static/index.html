@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CloudBox</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="auth-screen" class="auth-screen">
+  <div class="auth-box">
+    <h1 class="logo">CloudBox</h1>
+    <div class="auth-tabs">
+      <button class="tab active" data-tab="login">Войти</button>
+      <button class="tab" data-tab="register">Регистрация</button>
+    </div>
+
+    <form id="login-form" class="auth-form">
+      <input type="email" id="login-email" placeholder="Email" required />
+      <input type="password" id="login-password" placeholder="Пароль" required />
+      <button type="submit" class="btn btn-primary">Войти</button>
+      <p class="auth-error" id="login-error"></p>
+    </form>
+
+    <form id="register-form" class="auth-form hidden">
+      <input type="email" id="reg-email" placeholder="Email" required />
+      <input type="password" id="reg-password" placeholder="Пароль" required />
+      <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+      <p class="auth-error" id="register-error"></p>
+    </form>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-screen" class="app-screen hidden">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">CloudBox</div>
+
+    <button class="btn btn-primary upload-btn" id="upload-btn">+ Загрузить</button>
+    <input type="file" id="file-input" multiple hidden />
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-folder="null">Все файлы</button>
+    </nav>
+
+    <div class="sidebar-folders">
+      <div class="folders-header">
+        <span>Папки</span>
+        <button class="icon-btn" id="new-folder-btn" title="Новая папка">+</button>
+      </div>
+      <div id="folder-list"></div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="quota-bar">
+        <div class="quota-fill" id="quota-fill"></div>
+      </div>
+      <div class="quota-text" id="quota-text">Загрузка...</div>
+      <button class="logout-btn" id="logout-btn">Выйти</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="main-header">
+      <h2 id="current-folder-name">Все файлы</h2>
+      <div class="header-actions">
+        <input type="text" id="search-input" placeholder="Поиск..." class="search-input" />
+      </div>
+    </header>
+
+    <div id="file-list" class="file-list">
+      <div class="empty-state" id="empty-state">Файлов нет</div>
+    </div>
+  </main>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay hidden" id="modal-overlay">
+  <div class="modal" id="modal">
+    <h3 id="modal-title"></h3>
+    <div id="modal-body"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" id="modal-cancel">Отмена</button>
+      <button class="btn btn-primary" id="modal-confirm">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast hidden"></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

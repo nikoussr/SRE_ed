@@ -2,13 +2,14 @@ from contextlib import asynccontextmanager
 
 import redis.asyncio as aioredis
 import structlog
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database import create_tables
-from app.dependencies import set_redis
+from app.dependencies import get_current_user, set_redis
 from app.middleware.logging import LoggingMiddleware, configure_logging
 from app.middleware.metrics import MetricsMiddleware, metrics_endpoint
 from app.routes import auth, files, folders, share
@@ -62,6 +63,7 @@ app.include_router(folders.router)
 app.include_router(share.router)
 
 app.add_route("/metrics", metrics_endpoint)
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
 @app.get("/health")
@@ -69,11 +71,15 @@ async def health():
     return {"status": "ok"}
 
 
-@app.get("/quota")
-async def quota(request: Request):
-    from app.dependencies import get_current_user, bearer
-    # just a passthrough — handled in dependency
-    return {}
+@app.get("/quota/info")
+async def quota_info(current_user=Depends(get_current_user)):
+    return {"used_bytes": current_user.used_bytes, "quota_bytes": current_user.quota_bytes}
+
+
+@app.get("/", response_class=HTMLResponse)
+async def index():
+    with open("app/static/index.html") as f:
+        return f.read()
 
 
 @app.exception_handler(Exception)
