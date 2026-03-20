@@ -12,15 +12,9 @@ filebeat.inputs:
 
 output.elasticsearch:
   hosts: ["localhost:9200"]
-  index: "cloud-storage-%{+yyyy.MM.dd}"
+  index: "applogs-%{+yyyy.MM.dd}"
 
 setup.ilm.enabled: false
-setup.template.enabled: true
-setup.template.name: "cloud-storage"
-setup.template.pattern: "cloud-storage-*"
-setup.template.overwrite: true
-setup.template.settings:
-  index.number_of_shards: 1
-  index.number_of_replicas: 0
+setup.template.enabled: false
 
 logging.level: warning
