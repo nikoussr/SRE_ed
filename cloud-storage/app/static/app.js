@@ -241,9 +241,9 @@ function renderFolders() {
     const el = document.createElement('div');
     el.className = 'folder-item' + (currentFolderId === f.id ? ' active' : '');
     el.innerHTML = `
-      <span class="folder-icon">📁</span>
+      <span class="folder-icon"><i data-lucide="folder"></i></span>
       <span class="folder-name">${esc(f.name)}</span>
-      <span class="folder-del" data-id="${f.id}" title="Удалить">✕</span>
+      <span class="folder-del" data-id="${f.id}" title="Удалить"><i data-lucide="x"></i></span>
     `;
     el.addEventListener('click', e => {
       if (e.target.classList.contains('folder-del')) {
@@ -262,6 +262,7 @@ function renderFolders() {
     });
     list.appendChild(el);
   });
+  lucide.createIcons();
 }
 
 function renderFiles(query = '') {
@@ -290,10 +291,10 @@ function renderFiles(query = '') {
         <div class="file-meta">${formatSize(f.size_bytes)} · ${formatDate(f.created_at)}</div>
       </div>
       <div class="file-actions">
-        <button class="file-action-btn" title="Скачать" data-action="download">⬇</button>
-        <button class="file-action-btn" title="Поделиться" data-action="share">🔗</button>
-        <button class="file-action-btn" title="Переименовать" data-action="rename">✏️</button>
-        <button class="file-action-btn danger" title="Удалить" data-action="delete">🗑</button>
+        <button class="file-action-btn" title="Скачать" data-action="download"><i data-lucide="download"></i></button>
+        <button class="file-action-btn" title="Поделиться" data-action="share"><i data-lucide="link"></i></button>
+        <button class="file-action-btn" title="Переименовать" data-action="rename"><i data-lucide="pencil"></i></button>
+        <button class="file-action-btn danger" title="Удалить" data-action="delete"><i data-lucide="trash-2"></i></button>
       </div>
     `;
     el.querySelector('[data-action=download]').addEventListener('click', () => downloadFile(f));
@@ -302,6 +303,7 @@ function renderFiles(query = '') {
     el.querySelector('[data-action=delete]').addEventListener('click', () => confirmDeleteFile(f));
     list.appendChild(el);
   });
+  lucide.createIcons();
 }
 
 // ── UPLOAD ────────────────────────────────────────────────────────────
@@ -312,11 +314,12 @@ async function uploadFile(file) {
   const progressEl = document.createElement('div');
   progressEl.className = 'upload-progress file-item';
   progressEl.innerHTML = `
-    <span class="file-icon">⏳</span>
+    <span class="file-icon"><i data-lucide="loader"></i></span>
     <span class="progress-name">${esc(file.name)}</span>
     <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
   `;
   list.prepend(progressEl);
+  lucide.createIcons();
   progressEl.querySelector('.progress-fill').style.width = '60%';
 
   const form = new FormData();
@@ -450,14 +453,14 @@ function formatDate(iso) {
 }
 
 function fileIcon(ct = '') {
-  if (ct.startsWith('image/')) return '🖼';
-  if (ct.startsWith('video/')) return '🎬';
-  if (ct.startsWith('audio/')) return '🎵';
-  if (ct.includes('pdf')) return '📄';
-  if (ct.includes('zip') || ct.includes('gzip') || ct.includes('tar')) return '🗜';
-  if (ct.includes('json') || ct.includes('javascript') || ct.includes('html') || ct.includes('css')) return '💻';
-  if (ct.includes('text')) return '📝';
-  return '📦';
+  if (ct.startsWith('image/')) return '<i data-lucide="image"></i>';
+  if (ct.startsWith('video/')) return '<i data-lucide="video"></i>';
+  if (ct.startsWith('audio/')) return '<i data-lucide="music"></i>';
+  if (ct.includes('pdf')) return '<i data-lucide="file-text"></i>';
+  if (ct.includes('zip') || ct.includes('gzip') || ct.includes('tar')) return '<i data-lucide="archive"></i>';
+  if (ct.includes('json') || ct.includes('javascript') || ct.includes('html') || ct.includes('css')) return '<i data-lucide="code"></i>';
+  if (ct.includes('text')) return '<i data-lucide="file-text"></i>';
+  return '<i data-lucide="file"></i>';
 }
 
 function esc(s) {

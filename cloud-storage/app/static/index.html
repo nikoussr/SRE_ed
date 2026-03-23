@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CloudBox</title>
   <link rel="stylesheet" href="/static/style.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -68,7 +69,7 @@
 
   <main class="main">
     <header class="main-header">
-      <button class="hamburger" id="hamburger-btn" aria-label="Меню">☰</button>
+      <button class="hamburger" id="hamburger-btn" aria-label="Меню"><i data-lucide="menu"></i></button>
       <h2 id="current-folder-name">Все файлы</h2>
       <div class="header-actions">
         <input type="text" id="search-input" placeholder="Поиск..." class="search-input" />
@@ -96,19 +97,19 @@
 <!-- BOTTOM NAV (mobile) -->
 <nav class="bottom-nav" id="bottom-nav">
   <button class="bottom-nav-item active" id="bn-files">
-    <span class="bn-icon">🗂</span>
+    <span class="bn-icon"><i data-lucide="layout-grid"></i></span>
     <span class="bn-label">Файлы</span>
   </button>
   <button class="bottom-nav-item" id="bn-upload">
-    <span class="bn-icon bn-upload-icon">＋</span>
+    <span class="bn-icon bn-upload-icon"><i data-lucide="plus"></i></span>
     <span class="bn-label">Загрузить</span>
   </button>
   <button class="bottom-nav-item" id="bn-folders">
-    <span class="bn-icon">📁</span>
+    <span class="bn-icon"><i data-lucide="folder"></i></span>
     <span class="bn-label">Папки</span>
   </button>
   <button class="bottom-nav-item" id="bn-logout">
-    <span class="bn-icon">⏏</span>
+    <span class="bn-icon"><i data-lucide="log-out"></i></span>
     <span class="bn-label">Выйти</span>
   </button>
 </nav>
@@ -117,5 +118,6 @@
 <div id="toast" class="toast hidden"></div>
 
 <script src="/static/app.js"></script>
+<script>lucide.createIcons();</script>
 </body>
 </html>
