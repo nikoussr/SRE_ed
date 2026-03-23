@@ -488,8 +488,14 @@ body {
   .upload-btn { display: none; }
   .sidebar-logo { display: none; }
 
-  /* compact header */
-  .main-header { height: 52px; }
+  /* compact header with safe area for iOS status bar */
+  .main-header {
+    height: calc(52px + env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
+  }
+  .sidebar {
+    padding-top: calc(56px + env(safe-area-inset-top));
+  }
   .search-input { width: 140px; font-size: 14px; padding: 8px 10px; }
 
   /* toast above bottom nav */

@@ -1,6 +1,8 @@
+import asyncio
+
 import structlog
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, status
-from fastapi.responses import StreamingResponse
+from fastapi.responses import Response
 from pydantic import BaseModel
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -118,10 +120,11 @@ async def download_file(
     if not file:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="File not found")
 
-    obj = storage_service.get_object(file.storage_key)
+    loop = asyncio.get_event_loop()
+    data = await loop.run_in_executor(None, storage_service.get_object_bytes, file.storage_key)
     logger.info("file.download", user_id=current_user.id, file_id=file_id)
-    return StreamingResponse(
-        obj,
+    return Response(
+        content=data,
         media_type=file.content_type,
         headers={"Content-Disposition": f'attachment; filename="{file.original_name}"'},
     )

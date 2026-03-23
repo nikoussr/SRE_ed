@@ -42,8 +42,13 @@ class StorageService:
         logger.info("storage.upload", key=key, size_bytes=size)
         return size
 
-    def get_object(self, key: str):
-        return self.client.get_object(self.bucket, key)
+    def get_object_bytes(self, key: str) -> bytes:
+        response = self.client.get_object(self.bucket, key)
+        try:
+            return response.read()
+        finally:
+            response.close()
+            response.release_conn()
 
     def delete(self, key: str):
         try:
