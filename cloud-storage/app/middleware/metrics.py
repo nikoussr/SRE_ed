@@ -43,15 +43,17 @@ class MetricsMiddleware(BaseHTTPMiddleware):
         ACTIVE_REQUESTS.inc()
         start = time.perf_counter()
 
+        status_code = 500
         try:
             response = await call_next(request)
+            status_code = response.status_code
         finally:
             duration = time.perf_counter() - start
             ACTIVE_REQUESTS.dec()
             REQUEST_COUNT.labels(
                 method=request.method,
                 endpoint=endpoint,
-                status=response.status_code,
+                status=status_code,
             ).inc()
             REQUEST_DURATION.labels(endpoint=endpoint).observe(duration)
 
