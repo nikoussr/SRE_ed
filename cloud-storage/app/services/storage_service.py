@@ -42,13 +42,8 @@ class StorageService:
         logger.info("storage.upload", key=key, size_bytes=size)
         return size
 
-    def get_download_url(self, key: str, expires_seconds: int = 3600) -> str:
-        from datetime import timedelta
-        return self.client.presigned_get_object(
-            self.bucket,
-            key,
-            expires=timedelta(seconds=expires_seconds),
-        )
+    def get_object(self, key: str):
+        return self.client.get_object(self.bucket, key)
 
     def delete(self, key: str):
         try:

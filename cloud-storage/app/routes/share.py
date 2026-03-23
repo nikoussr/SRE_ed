@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 
 import structlog
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import RedirectResponse
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -70,5 +70,9 @@ async def download_shared_file(
         raise HTTPException(status.HTTP_410_GONE, detail="Link expired")
 
     logger.info("share.accessed", file_id=file.id, token=token)
-    url = storage_service.get_download_url(file.storage_key)
-    return RedirectResponse(url)
+    obj = storage_service.get_object(file.storage_key)
+    return StreamingResponse(
+        obj,
+        media_type=file.content_type,
+        headers={"Content-Disposition": f'attachment; filename="{file.original_name}"'},
+    )
