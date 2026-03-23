@@ -1,4 +1,5 @@
 import asyncio
+from urllib.parse import quote
 
 import structlog
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, status
@@ -123,10 +124,11 @@ async def download_file(
     loop = asyncio.get_event_loop()
     data = await loop.run_in_executor(None, storage_service.get_object_bytes, file.storage_key)
     logger.info("file.download", user_id=current_user.id, file_id=file_id)
+    encoded_name = quote(file.original_name, safe="")
     return Response(
         content=data,
         media_type=file.content_type,
-        headers={"Content-Disposition": f'attachment; filename="{file.original_name}"'},
+        headers={"Content-Disposition": f"attachment; filename*=UTF-8''{encoded_name}"},
     )
 
 

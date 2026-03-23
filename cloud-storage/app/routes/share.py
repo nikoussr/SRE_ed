@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 import structlog
 from fastapi import APIRouter, Depends, HTTPException, status
 import asyncio
+from urllib.parse import quote
 
 from fastapi.responses import Response
 from pydantic import BaseModel
@@ -74,8 +75,9 @@ async def download_shared_file(
     logger.info("share.accessed", file_id=file.id, token=token)
     loop = asyncio.get_event_loop()
     data = await loop.run_in_executor(None, storage_service.get_object_bytes, file.storage_key)
+    encoded_name = quote(file.original_name, safe="")
     return Response(
         content=data,
         media_type=file.content_type,
-        headers={"Content-Disposition": f'attachment; filename="{file.original_name}"'},
+        headers={"Content-Disposition": f"attachment; filename*=UTF-8''{encoded_name}"},
     )
